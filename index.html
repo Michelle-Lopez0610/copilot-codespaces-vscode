@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HajimiAPI - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .video-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .video-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .play-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .placeholder-content h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .placeholder-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .image-card.gif-card img {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .features {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .features h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .features ul {
+            list-style: none;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .features li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .video-section, .image-card {
+                padding: 20px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px 0;
+            color: rgba(255,255,255,0.8);
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>HajimiAPI</h1>
+            <p>基于 @QuantumNous/new-api 的优化体验平台</p>
+        </header>
+
+        <main class="main-content">
+            <section class="video-section">
+                <h2 class="video-title">精彩视频内容</h2>
+                <div class="video-container">
+                    <!-- Bilibili视频播放器 - 配置了所有要求的参数 -->
+                    <iframe 
+                        src="https://player.bilibili.com/player.html?aid=170001&bvid=BV17x411w7KC&cid=279786&page=1&as_wide=1&high_quality=1&danmaku=1&autoplay=1&t=0&volume=50"
+                        scrolling="no" 
+                        border="0" 
+                        frameborder="no" 
+                        framespacing="0" 
+                        allowfullscreen="true"
+                        allow="autoplay; fullscreen"
+                        sandbox="allow-scripts allow-same-origin allow-presentation">
+                    </iframe>
+                    
+                    <!-- 备用播放器区域 - 如果iframe被阻止时显示 -->
+                    <div class="video-placeholder" id="videoPlaceholder" style="display: none;">
+                        <div class="placeholder-content">
+                            <div class="play-icon">▶</div>
+                            <h3>Bilibili 视频播放器</h3>
+                            <p>配置参数：自动播放 | 弹幕开启 | 音量50% | 最高清晰度</p>
+                            <button class="play-button" onclick="loadBilibiliPlayer()">点击加载播放器</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="features">
+                    <h3>播放器特性</h3>
+                    <ul>
+                        <li>直连 Bilibili 高清视频</li>
+                        <li>自动开启弹幕系统</li>
+                        <li>智能自动播放</li>
+                        <li>音量默认 50%</li>
+                        <li>最高清晰度优先</li>
+                    </ul>
+                </div>
+            </section>
+
+            <aside class="sidebar">
+                <div class="image-card gif-card">
+                    <img src="https://p.inari.site/usr/1684/6842570dee1d8.gif" 
+                         alt="动态展示图" 
+                         loading="lazy">
+                </div>
+                
+                <div class="image-card">
+                    <img src="https://p.inari.site/usr/1684/684257a95cc53.png" 
+                         alt="特色功能图" 
+                         loading="lazy">
+                </div>
+            </aside>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 HajimiAPI. Powered by @QuantumNous/new-api</p>
+        </footer>
+    </div>
+
+    <script>
+        // 检测iframe是否被阻止，如果被阻止则显示备用播放器
+        function checkIframeLoad() {
+            const iframe = document.querySelector('.video-container iframe');
+            const placeholder = document.getElementById('videoPlaceholder');
+            
+            iframe.addEventListener('load', function() {
+                try {
+                    // 尝试访问iframe内容
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (!iframeDoc || iframeDoc.body.innerHTML.includes('blocked')) {
+                        throw new Error('Iframe blocked');
+                    }
+                } catch (e) {
+                    // 如果无法访问iframe内容或者被阻止，显示备用播放器
+                    iframe.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                }
+            });
+
+            // 设置超时检测
+            setTimeout(() => {
+                try {
+                    if (iframe.contentDocument === null) {
+                        iframe.style.display = 'none';
+                        placeholder.style.display = 'flex';
+                    }
+                } catch (e) {
+                    iframe.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                }
+            }, 3000);
+        }
+
+        // 加载Bilibili播放器的函数
+        function loadBilibiliPlayer() {
+            const iframe = document.querySelector('.video-container iframe');
+            const placeholder = document.getElementById('videoPlaceholder');
+            
+            // 尝试重新加载iframe
+            iframe.src = iframe.src + '&reload=' + Date.now();
+            iframe.style.display = 'block';
+            placeholder.style.display = 'none';
+            
+            // 如果仍然无法加载，打开新窗口
+            setTimeout(() => {
+                try {
+                    if (iframe.contentDocument === null) {
+                        window.open('https://www.bilibili.com/video/BV17x411w7KC', '_blank');
+                    }
+                } catch (e) {
+                    window.open('https://www.bilibili.com/video/BV17x411w7KC', '_blank');
+                }
+            }, 2000);
+        }
+
+        // 设置视频音量为50%
+        document.addEventListener('DOMContentLoaded', function() {
+            checkIframeLoad();
+            
+            const iframe = document.querySelector('.video-container iframe');
+            
+            // 当iframe加载完成后设置音量
+            iframe.addEventListener('load', function() {
+                try {
+                    // 通过postMessage与bilibili播放器通信设置音量
+                    iframe.contentWindow.postMessage({
+                        type: 'setVolume',
+                        volume: 0.5
+                    }, '*');
+                } catch (e) {
+                    console.log('Unable to set volume due to cross-origin restrictions');
+                }
+            });
+
+            // 添加一些交互效果
+            const imageCards = document.querySelectorAll('.image-card');
+            imageCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // 添加页面加载动画
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
